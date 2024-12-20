@@ -1,0 +1,9 @@
+
+node_modules/
+/dist
+/.tsbuildinfo
+docker-compose.yml
+*.db
+.env
+.vscode/
+
