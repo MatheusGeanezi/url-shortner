@@ -1,30 +1,33 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import mysql from 'mysql2'
 import dotenv from 'dotenv'
+import YAML from 'yamljs'
+import urlRoutes from './src/modules/url/routes/index'
+import sequelize from './config/database'
+import swaggerUi from 'swagger-ui-express'
+import userRoutes from './src/modules/users/routes'
+
 const app = express()
-
-// import urlRoutes from "./routes/urlRoutes";
-
-// app.use("/api/url", urlRoutes);
 
 dotenv.config()
 app.use(bodyParser.json())
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-})
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Erro ao conectar ao banco de dados:', err.message)
-    return
-  }
-  console.log('Conexão com o banco de dados estabelecida com sucesso!')
-})
-const PORT = 3000
+sequelize
+  .sync()
+  .then(() => {
+    console.log('Tabelas sincronizadas!')
+  })
+  .catch((error: Error) => {
+    console.error('Erro ao sincronizar tabelas:', error.message)
+  })
+
+const userDocs = YAML.load('src/modules/users/docs/userDocs.yml')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(userDocs))
+app.use('/api/url', urlRoutes)
+app.use('/api/user', userRoutes)
+
+const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`)
+  console.log('Acesse http://localhost:3001/api-docs para ver a documentação')
 })

@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: API para gerenciar usuários.
+  version: 1.0.0
+paths:
+  /api/user/register:
+    post:
+      summary: Registra um novo usuário
+      description: Endpoint para cadastrar um novo usuário no sistema.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: securepassword123
+                name:
+                  type: string
+                  example: João Silva
+              required:
+                - email
+                - password
+                - name
+      responses:
+        201:
+          description: Usuário registrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "64bd4f5c3ecf4a5cbe12d9e3"
+                  email:
+                    type: string
+                    example: user@example.com
+                  name:
+                    type: string
+                    example: João Silva
+        400:
+          description: Dados inválidos
+        500:
+          description: Erro no servidor

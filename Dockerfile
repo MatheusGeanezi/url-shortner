@@ -1,15 +1,15 @@
-
-FROM node:16-alpine
+FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
+
 RUN npm install
+
+RUN npm install -g ts-node
 
 COPY . .
 
-RUN npx tsc
-
 EXPOSE 3000
 
-CMD ["node", "dist/server.js"]
+CMD ["ts-node", "nodemon", "server.ts"]
