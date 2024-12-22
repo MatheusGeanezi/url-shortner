@@ -1,6 +1,12 @@
-import UserModel from '../model/userModel'
+import UserModel, { IUserAttributes } from '../model/userModel'
 
-export const findOneUserRepository = async (filter: object) => {
+interface IUserFilter {
+  where: any
+}
+
+export const findOneUserRepository = async (
+  filter: IUserFilter
+): Promise<IUserAttributes | any> => {
   const user = await UserModel.findOne(filter)
   return user
 }

@@ -1,29 +1,20 @@
-import sequelize from '../../../../config/database'
 import { hashPassword } from '../../../utils/hashPassword'
 import { findOneUserRepository } from '../repository/findOneUserRepository'
 import { registerUserRepository } from '../repository/registerUserRepository'
 import { registerUserService } from '../services/registerUserService'
 
-jest.mock('../repository/findOneUserRepository')
-jest.mock('../repository/registerUserRepository')
+jest.mock('../repository/findOneUserRepository', () => ({
+  findOneUserRepository: jest.fn()
+}))
+
+jest.mock('../repository/registerUserRepository', () => ({
+  registerUserRepository: jest.fn()
+}))
 jest.mock('../../../utils/hashPassword')
 
 const mockedFindOneUserRepository = findOneUserRepository as jest.Mock
 const mockedRegisterUserRepository = registerUserRepository as jest.Mock
 const mockedHashPassword = hashPassword as jest.Mock
-
-// beforeAll(async () => {
-//   try {
-//     await sequelize.authenticate()
-//     console.log('Conexão com o banco de dados bem-sucedida!')
-//   } catch (error) {
-//     console.error('Não foi possível conectar ao banco de dados:', error)
-//   }
-// })
-
-// afterAll(async () => {
-//   await sequelize.close()
-// })
 
 const makeSut = async (userData: any) => {
   return registerUserService(userData)
