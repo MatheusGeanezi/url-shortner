@@ -38,11 +38,17 @@ Antes de rodar o projeto, certifique-se de que as seguintes ferramentas estejam 
 PORT=3000
 
 # Configurações do Banco de Dados e JWT
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=rootpassword
-DB_NAME=url_shortner
+
+DB_HOST=localhost 
+DB_USER=root 
+DB_PASSWORD=rootpassword 
+DB_NAME=url_shortner 
 JWT_SECRET=senha
+
+# Configurações env
+ utilizar env.example
+
+
 
 
 
