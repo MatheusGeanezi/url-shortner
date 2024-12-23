@@ -29,9 +29,20 @@ Antes de rodar o projeto, certifique-se de que as seguintes ferramentas estejam 
    ```bash
    git clone https://github.com/MatheusGeanezi/url-shortner.git
    cd url-shortener
+   docker-compose up --build
    docker-compose up 
    npm install
    npm run dev
+
+# Configurações do Servidor
+PORT=3000
+
+# Configurações do Banco de Dados e JWT
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=rootpassword
+DB_NAME=url_shortner
+JWT_SECRET=senha
 
 
 
