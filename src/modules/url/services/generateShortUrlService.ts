@@ -10,8 +10,6 @@ export const generateShortUrl = async (): Promise<string> => {
     shortUrl += characters[randomIndex]
   }
 
-  const baseUrl = 'http://localhost/'
-
   let existingUrl = await getUrlByShortUrl({ where: { shortUrl } })
   while (existingUrl) {
     shortUrl = ''
@@ -22,5 +20,5 @@ export const generateShortUrl = async (): Promise<string> => {
     existingUrl = await getUrlByShortUrl({ where: { shortUrl } })
   }
 
-  return baseUrl + shortUrl
+  return shortUrl
 }

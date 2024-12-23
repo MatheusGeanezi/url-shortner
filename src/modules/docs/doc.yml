@@ -155,6 +155,64 @@ paths:
         '500':
           description: 'Erro interno do servidor'
 
+  /api/url/redirect/{shortUrl}:
+    get:
+      summary: "Redireciona para a URL de origem e contabiliza os cliques"
+      description: "Recebe uma URL encurtada e redireciona para a URL original, contabilizando o número de cliques."
+      tags:
+        - Urls
+      parameters:
+        - in: path
+          name: shortUrl
+          required: true
+          schema:
+            type: string
+          description: "A URL encurtada para redirecionamento"
+      responses:
+        302:
+          description: "Redirecionamento para a URL original"
+          headers:
+            Location:
+              description: "URL de destino para redirecionamento"
+              schema:
+                type: string
+                example: "https://www.google.com"
+        400:
+          description: "URL encurtada não encontrada ou inválida"
+        404:
+          description: "URL não encontrada"
+        500:
+          description: "Erro interno do servidor"
+
+  /api/url/{shortUrl}:
+    delete:
+      summary: "Deleta uma URL encurtada"
+      description: "Deleta uma URL encurtada"
+      tags:
+        - Urls
+      parameters:
+        - in: path
+          name: shortUrl
+          required: true
+          schema:
+            type: string
+          description: "Deleta uma URL encurtada"
+      responses:
+        302:
+          description: "Deleta uma URL encurtada"
+          headers:
+            Location:
+              description: "Deleta uma URL encurtada"
+              schema:
+                type: string
+                example: "igiSHt"
+        400:
+          description: "URL encurtada não encontrada ou inválida"
+        404:
+          description: "URL não encontrada"
+        500:
+          description: "Erro interno do servidor"         
+
 components:
   securitySchemes:
     bearerAuth:

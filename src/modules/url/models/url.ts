@@ -1,6 +1,17 @@
 import { DataTypes, Sequelize } from 'sequelize'
 import sequelize from '../../../../config/database'
 
+export interface IUrlAttributes {
+  id: number
+  longUrl: string
+  shortUrl: string
+  clicks: number
+  userId?: number | null
+  deletedAt?: Date | null
+  createdAt?: Date
+  updatedAt?: Date
+}
+
 export const UrlModel = sequelize.define(
   'url',
   {

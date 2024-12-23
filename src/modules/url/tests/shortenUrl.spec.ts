@@ -48,6 +48,6 @@ describe('shortenUrl', () => {
     }
     mockedRegisterUrlRepository.mockResolvedValue(mockUrlData)
 
-    const result = await makeSut('http://longurl.com', null)
+    await makeSut('http://longurl.com', null)
   })
 })
