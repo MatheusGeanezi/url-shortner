@@ -104,3 +104,34 @@ paths:
                   error:
                     type: string
                     example: 'Erro interno do servidor.'
+
+  /api/url/shorten:
+    post:
+      summary: 'Encurta uma URL'
+      description: 'Encurta a URL fornecida e retorna o URL encurtado'
+      tags:
+        - Urls
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                longUrl:
+                  type: string
+                  example: https://www.exemplo.com
+              required:
+                - longUrl
+      responses:
+        200:
+          description: 'URL encurtada criada com sucesso'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # optional, for documentation purposes only
+
+security:
+  - bearerAuth: []

@@ -1,33 +1,37 @@
 import jwt from 'jsonwebtoken'
+import { Request, Response, NextFunction } from 'express'
+import dotenv from 'dotenv'
 
-const jwtSecret = process.env.JWT_SECRET
+dotenv.config()
 
-if (!jwtSecret) {
-  throw new Error('JWT secret is missing from the environment variables')
+const JWT_SECRET_KEY = process.env.JWT_SECRET
+if (!JWT_SECRET_KEY) {
+  throw new Error('JWT_SECRET_KEY não está definido nas variáveis de ambiente')
 }
 
-export const authenticateToken = (
-  req: {
-    headers: { [x: string]: string }
-    user: string | jwt.JwtPayload | undefined
-  },
-  res: {
-    status: (arg0: number) => { json: (arg0: { message: string }) => void }
-  },
-  next: () => void
+interface JwtPayload {
+  userId: string
+}
+
+export const authenticateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   const token = req.headers['authorization']?.split(' ')[1]
+  res.locals.userAuth = false
 
   if (!token) {
-    return res.status(403).json({ message: 'Token não fornecido' })
+    return next()
   }
 
-  jwt.verify(token, jwtSecret, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Token inválido' })
-    }
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET_KEY) as JwtPayload
+    res.locals.userAuth = true
+    res.locals.user = decoded
 
-    req.user = user
-    next()
-  })
+    return next()
+  } catch (error) {
+    return next()
+  }
 }

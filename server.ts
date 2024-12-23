@@ -21,8 +21,8 @@ sequelize
     console.error('Erro ao sincronizar tabelas:', error.message)
   })
 
-const userDocs = YAML.load('src/modules/users/docs/userDocs.yml')
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(userDocs))
+const docs = YAML.load('src/modules/docs/doc.yml')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs))
 app.use('/api/url', urlRoutes)
 app.use('/api/user', userRoutes)
 

@@ -1,10 +1,15 @@
+import { Optional } from 'sequelize'
 import { UrlModel } from '../models/url'
 
-export const saveUrl = async (urlData: {
+export interface IurlShortner {
+  id?: string
   longUrl: string
   shortUrl: string
   clicks: number
-}) => {
-  const newUrl = await UrlModel.create(urlData)
+  userId?: string | null
+}
+
+export const registerUrlRepository = async (urlData: IurlShortner) => {
+  const newUrl = await UrlModel.create(urlData as Optional<IurlShortner, 'id'>)
   return newUrl
 }

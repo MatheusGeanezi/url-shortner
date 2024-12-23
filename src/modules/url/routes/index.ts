@@ -1,11 +1,9 @@
 import { Router } from 'express'
-import { createShortUrl } from '../controllers/postUrlController'
+import { createShortUrlController } from '../controllers/postUrlController'
+import { authenticateUser } from '../../../middlewares/authMiddleware'
 
 const urlRoutes = Router()
 
-urlRoutes.post('/shorten', createShortUrl)
-
-// router.get('/shorten', createShortUrl)
-// router.get("/:shortId", getOriginalUrl)
+urlRoutes.post('/shorten', authenticateUser, createShortUrlController)
 
 export default urlRoutes
