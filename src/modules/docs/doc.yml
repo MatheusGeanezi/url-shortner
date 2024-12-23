@@ -126,12 +126,43 @@ paths:
       responses:
         200:
           description: 'URL encurtada criada com sucesso'
+  /api/url/:
+    get:
+      summary: 'Lista todas as URLs encurtadas do usuário autenticado'
+      description: 'Retorna a lista de URLs encurtadas pertencentes ao usuário autenticado, com a quantidade de cliques.'
+      tags:
+        - Urls
+      responses:
+        '200':
+          description: 'Lista de URLs encurtadas'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    shortUrl:
+                      type: string
+                    longUrl:
+                      type: string
+                    clicks:
+                      type: integer
+        '401':
+          description: 'Não autorizado - Token não fornecido ou inválido'
+        '500':
+          description: 'Erro interno do servidor'
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT  # optional, for documentation purposes only
+      bearerFormat: JWT
 
 security:
-  - bearerAuth: []
+  - bearerAuth: []       
+
+  
