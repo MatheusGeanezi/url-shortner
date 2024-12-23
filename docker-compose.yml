@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword 
+      MYSQL_DATABASE: url_shortner 
+      MYSQL_USER: user 
+      MYSQL_PASSWORD: root 
+    ports:
+      - "3306:3306" 
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always  
+
+  app:
+    build:
+      context: .  
+    container_name: app-container
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_USER: user
+      DB_PASSWORD: root
+      DB_NAME: url_shortner
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev  
+    restart: always 
+
+volumes:
+  mysql-data:
