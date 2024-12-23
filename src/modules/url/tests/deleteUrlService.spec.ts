@@ -25,7 +25,7 @@ describe('deleteUrlService', () => {
   it('should throw an error if shortUrl is not provided', async () => {
     const user = { id: 1 }
 
-    await expect(deleteUrlService('', user)).rejects.toThrow(
+    await expect(makeSut('', user)).rejects.toThrow(
       'URL encurtada é obrigatória!'
     )
   })
@@ -33,8 +33,8 @@ describe('deleteUrlService', () => {
   it('should throw an error if user is not authenticated', async () => {
     const user = null
 
-    await expect(deleteUrlService('exYJ1o', user)).rejects.toThrow(
-      'Faça o login para acessar a listagem!'
+    await expect(makeSut('exYJ1o', user)).rejects.toThrow(
+      'Faça o login para acessar a remoção!'
     )
   })
 
@@ -44,7 +44,7 @@ describe('deleteUrlService', () => {
     const mockUrl = null
     mockedGetUrlByShortUrl.mockResolvedValue(mockUrl)
 
-    await expect(deleteUrlService('exYJ1o', user)).rejects.toThrow(
+    await expect(makeSut('exYJ1o', user)).rejects.toThrow(
       'URL não encontrada ou já deletada'
     )
   })
@@ -60,8 +60,26 @@ describe('deleteUrlService', () => {
     }
     mockedGetUrlByShortUrl.mockResolvedValue(mockUrl)
 
-    await expect(deleteUrlService('exYJ1o', user)).rejects.toThrow(
+    await expect(makeSut('exYJ1o', user)).rejects.toThrow(
       'Você não tem permissão para deletar essa URL'
     )
+  })
+  it('should successfully delete the URL if the user has permission', async () => {
+    const user = { id: 1 }
+
+    const mockUrl = {
+      dataValues: {
+        deletedAt: null,
+        shortUrl: 'short123',
+        userId: 1
+      }
+    }
+    mockedGetUrlByShortUrl.mockResolvedValue(mockUrl)
+
+    mockedUpdateRepository.mockResolvedValue({})
+
+    const result = await makeSut('short123', user)
+
+    expect(result).toBe('URL deletada com sucesso')
   })
 })

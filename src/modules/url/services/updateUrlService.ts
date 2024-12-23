@@ -1,13 +1,19 @@
 import { getUrlByShortUrl } from '../repository/findOneUrlRepository'
 import { updateRepository } from '../repository/updateUrlRepository'
 
-export const deleteUrlService = async (shortUrl: string, user: any) => {
+export const updateUrlService = async (urls: any, user: any) => {
+  const { newLongUrl, shortUrl } = urls
+
+  if (!user) {
+    throw new Error('Faça o login para acessar a edição!')
+  }
+
   if (!shortUrl) {
     throw new Error('URL encurtada é obrigatória!')
   }
 
-  if (!user) {
-    throw new Error('Faça o login para acessar a remoção!')
+  if (!newLongUrl) {
+    throw new Error('Nova URL é obrigatória!')
   }
 
   const url = await getUrlByShortUrl({ where: { shortUrl } })
@@ -16,11 +22,7 @@ export const deleteUrlService = async (shortUrl: string, user: any) => {
     throw new Error('URL não encontrada ou já deletada')
   }
 
-  if (url.dataValues.userId !== user.id) {
-    throw new Error('Você não tem permissão para deletar essa URL')
-  }
+  await updateRepository({ shortUrl }, { longUrl: newLongUrl })
 
-  await updateRepository({ shortUrl }, { deletedAt: new Date() })
-
-  return 'URL deletada com sucesso'
+  return 'URL atualizada com sucesso'
 }

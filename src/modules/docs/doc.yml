@@ -211,8 +211,83 @@ paths:
         404:
           description: "URL não encontrada"
         500:
-          description: "Erro interno do servidor"         
+          description: "Erro interno do servidor"
 
+  /api/url/update:
+    patch:
+      summary: "Atualiza a URL fornecida"
+      description: "Atualiza a URL longa associada ao código da URL encurtada."
+      tags:
+        - Urls
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newLongUrl:
+                  type: string
+                  example: "https://www.hahahah.com"
+                  description: "A nova URL longa que será associada ao código da URL encurtada."
+                shortUrl:
+                  type: string
+                  example: "O9caK4"
+                  description: "O código da URL encurtada que será atualizado."
+              required:
+                - newLongUrl
+                - shortUrl
+      responses:
+        '200':
+          description: "URL atualizada com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "URL atualizada com sucesso"
+        '400':
+          description: "Dados inválidos ou URL encurtada não fornecida"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "URL encurtada ou nova URL não fornecida"
+        '401':
+          description: "Não autorizado, autenticação falhou"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Token de autenticação inválido ou ausente"
+        '404':
+          description: "URL não encontrada"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "URL encurtada não encontrada"
+        '500':
+          description: "Erro interno no servidor"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Erro inesperado ao tentar atualizar a URL"
 components:
   securitySchemes:
     bearerAuth:

@@ -26,8 +26,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs))
 app.use('/api/url', urlRoutes)
 app.use('/api/user', userRoutes)
 
-const PORT = 3001
+const PORT = 3000
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`)
-  console.log('Acesse http://localhost:3001/api-docs para ver a documentação')
+  console.log('Acesse http://localhost:3000/api-docs para ver a documentação')
 })
